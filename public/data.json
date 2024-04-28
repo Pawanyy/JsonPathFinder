@@ -1,0 +1,172 @@
+[
+    {
+        "id": 1,
+        "first_name": "Ody",
+        "last_name": "Rockey",
+        "email": "orockey0@businessinsider.com",
+        "personal": {
+            "best_friend": "Ody Rockey",
+            "favorite_color": "Aquamarine",
+            "favorite_word": "faucibus",
+            "physical_features": {
+                "eye_color": "Green",
+                "hair_color": "Purple",
+                "gender": "Male",
+                "shirt_size": "2XL"
+            },
+            "siblings": [],
+            "deepest": {
+                "darkest": {
+                    "secret": {
+                        "that": {
+                            "they": {
+                                "have": {
+                                    "never told anyone": "habitasse platea dictumst maecenas ut massa quis augue luctus tincidunt nulla mollis"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "id": 2,
+        "first_name": "Harland",
+        "last_name": "Mawby",
+        "email": "hmawby1@shareasale.com",
+        "personal": {
+            "best_friend": "Harland Mawby",
+            "favorite_color": "Maroon",
+            "favorite_word": "pede",
+            "physical_features": {
+                "eye_color": "Goldenrod",
+                "hair_color": "Fuscia",
+                "gender": "Male",
+                "shirt_size": "XL"
+            },
+            "siblings": [],
+            "deepest": {
+                "darkest": {
+                    "secret": {
+                        "that": {
+                            "they": {
+                                "have": {
+                                    "never told anyone": "integer ac neque duis"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "id": 3,
+        "first_name": "Jed",
+        "last_name": "Franchi",
+        "email": "jfranchi2@vistaprint.com",
+        "personal": {
+            "best_friend": "Jed Franchi",
+            "favorite_color": "Goldenrod",
+            "favorite_word": "ligula",
+            "physical_features": {
+                "eye_color": "Puce",
+                "hair_color": "Khaki",
+                "gender": "Genderqueer",
+                "shirt_size": "L"
+            },
+            "siblings": [
+                "Intéressant",
+                "Mà",
+                "Lauréna",
+                "Céline",
+                "Gaétane"
+            ],
+            "deepest": {
+                "darkest": {
+                    "secret": {
+                        "that": {
+                            "they": {
+                                "have": {
+                                    "never told anyone": "ut tellus nulla ut erat id mauris vulputate elementum nullam varius"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "id": 4,
+        "first_name": "Shelley",
+        "last_name": "Barringer",
+        "email": "sbarringer3@wufoo.com",
+        "personal": {
+            "best_friend": "Shelley Barringer",
+            "favorite_color": "Aquamarine",
+            "favorite_word": "ante",
+            "physical_features": {
+                "eye_color": "Blue",
+                "hair_color": "Turquoise",
+                "gender": "Bigender",
+                "shirt_size": "L"
+            },
+            "siblings": [
+                "Renée",
+                "Aí",
+                "Josée"
+            ],
+            "deepest": {
+                "darkest": {
+                    "secret": {
+                        "that": {
+                            "they": {
+                                "have": {
+                                    "never told anyone": "elementum eu interdum eu tincidunt in leo maecenas pulvinar lobortis est phasellus"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "id": 5,
+        "first_name": "Faustina",
+        "last_name": "Mawhinney",
+        "email": "fmawhinney4@weather.com",
+        "personal": {
+            "best_friend": "Faustina Mawhinney",
+            "favorite_color": "Violet",
+            "favorite_word": "rutrum",
+            "physical_features": {
+                "eye_color": "Goldenrod",
+                "hair_color": "Pink",
+                "gender": "Female",
+                "shirt_size": "S"
+            },
+            "siblings": [
+                "Mégane",
+                "Maïté",
+                "Anaël",
+                "Mélinda"
+            ],
+            "deepest": {
+                "darkest": {
+                    "secret": {
+                        "that": {
+                            "they": {
+                                "have": {
+                                    "never told anyone": "commodo placerat praesent blandit nam nulla integer pede"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+]
