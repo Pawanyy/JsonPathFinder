@@ -26,9 +26,14 @@ function mapPath(data, prefix = "") {
     return mapPathArray;
 }
 
+const selectedNode = (path) => {
+    console.log('Selected Node::> ', path);
+    window.dispatchEvent(new CustomEvent('pathSelected', { detail: { message: 'Path change event', path: path } }));
+}
+
 function LeafNode({ child }) {
     return (
-        <button className="block w-full text-start px-1 py-2 border-b-2 focus:bg-blue-100">
+        <button onClick={() => selectedNode(child.path)} className="block w-full text-start px-1 py-2 border-b-2 focus:bg-blue-100">
             <span className="text-blue-700 font-semibold">{child.prop}:</span>
             <span className="ps-2">{child.value}</span>
         </button>
@@ -38,21 +43,21 @@ function LeafNode({ child }) {
 function TreeNode({ node }) {
     return (
         <details>
-            <summary className="px-1 py-2 text-blue-700 font-semibold border-b-2 hover:cursor-pointer focus:bg-blue-100">
+            <summary onClick={() => selectedNode(node.path)} className="px-1 py-2 text-blue-700 font-semibold border-b-2 hover:cursor-pointer focus:bg-blue-100">
                 <span>{node.prop}:</span>
             </summary>
             {node.children && node.children.length > 0 && (
-                <div className="ms-4">
+                <>
                     {node.children.map((child, index) => (
-                        <>
+                        <div key={index} className="ms-4">
                             {
                                 child.children
                                     ? (<TreeNode key={index} node={child} />)
                                     : (<LeafNode key={index} child={child} />)
                             }
-                        </>
+                        </div>
                     ))}
-                </div>
+                </>
             )}
         </details>
     );
@@ -75,14 +80,14 @@ export default function ReaderBox({ jsonText }) {
         }
     }, [jsonText])
 
-    return (<div className="json-reader-tree">
-        <div className="px-2">
+    return (
+        <div className="json-reader-tree">
             {jsonData.map((row, index) => (
-                <>
+                <div key={index} className="px-2">
                     {row.children ? (<TreeNode key={index} node={row} />) : (<LeafNode key={index} child={row} />)}
-                </>
+                </div >
             )
             )}
-        </div >
-    </div>)
+        </div>
+    )
 } 

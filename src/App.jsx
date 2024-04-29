@@ -3,7 +3,7 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/theme-chrome";
 import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/ext-language_tools";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./components/Button";
 import JsonReaderBox from "./components/JsonReaderBox";
 
@@ -13,11 +13,37 @@ export default function App() {
 
     const [editorData, setEditorData] = useState("");
     const [pathData, setPathData] = useState("");
+    const [copySuccess, setCopySuccess] = useState(false);
 
     const onEditorChange = (text) => {
         setEditorData(text);
         console.log("change", text);
     }
+
+
+    const handleCopyClick = () => {
+        navigator.clipboard.writeText(pathData)
+            .then(() => {
+                setCopySuccess(true);
+                setTimeout(() => setCopySuccess(false), 1500); // Reset success message after 1.5 seconds
+            })
+            .catch(err => console.error('Failed to copy:', err));
+    };
+
+
+    useEffect(() => {
+
+        const pathChangeEvent = (event) => {
+            setPathData(event.detail.path);
+            console.log('Path Selected event data:', event.detail.path);
+        };
+
+        window.addEventListener('pathSelected', pathChangeEvent);
+
+        return () => {
+            window.removeEventListener('pathSelected', pathChangeEvent);
+        };
+    }, [])
 
     const beautifyClick = () => {
         try {
@@ -86,11 +112,13 @@ export default function App() {
                                         Path:
                                     </div>
                                     <input
-                                        className="w-full rounded rounded-e-none"
+                                        className="w-full rounded rounded-e-none px-1"
                                         value={pathData}
                                         readOnly
                                     />
-                                    <button className="bg-blue-500 text-white px-3 py-1 rounded rounded-s-none">Copy</button>
+                                    <button onClick={handleCopyClick} className="bg-blue-500 text-white px-3 py-1 rounded rounded-s-none">
+                                        {copySuccess ? "Copied!" : "Copy"}
+                                    </button>
                                 </div>
                             </div>
                             <div id="json-reader" className="bg-white h-full">
