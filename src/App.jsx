@@ -78,18 +78,20 @@ export default function App() {
     return (
         <>
             <div className="h-screen">
-                <header className="bg-blue-200 dark:bg-blue-900 py-2 px-5 flex justify-between">
+                <header className="bg-blue-500 dark:bg-blue-900 py-2 px-5 flex justify-between">
                     <h1 className="text-white font-bold text-2xl">
                         JSON Smart Path Finder
                     </h1>
                     <ThemeSwitcher />
                 </header>
-                <div className="flex bg-gray-200 space-x-3 h-full">
-                    <div className="w-3/6 bg-blue-50 border-slate-500 border-1 shadow">
-                        <div className="flex justify-between m-2">
-                            <Button onClick={sampleClick} text="Sample" />
-                            <Button onClick={beautifyClick} text="Beautify" />
-                            <Button onClick={minifyClick} text="Minify" />
+                <div className="block lg:flex bg-gray-200 space-x-3 h-full px-3 py-2">
+                    <div className="flex-1 h-full bg-blue-50 border-slate-500 rounded-xl border-1 shadow">
+                        <div>
+                            <div className="flex justify-between p-2">
+                                <Button onClick={sampleClick} text="Sample" />
+                                <Button onClick={beautifyClick} text="Beautify" />
+                                <Button onClick={minifyClick} text="Minify" />
+                            </div>
                         </div>
                         <AceEditor
                             mode="json"
@@ -104,22 +106,20 @@ export default function App() {
                             editorProps={{ $blockScrolling: false }}
                         />
                     </div>
-                    <div className="w-3/6 bg-blue-50 border-slate-500 border-1 shadow">
+                    <div className="flex-1 h-full bg-blue-50 border-slate-500 rounded-xl border-1 shadow">
                         <div id="reader-box" className="">
-                            <div id="reader-path-bar-holder" className="">
-                                <div id="reader-path-bar" className="flex justify-between py-2">
-                                    <div className="px-2">
-                                        Path:
-                                    </div>
-                                    <input
-                                        className="w-full rounded rounded-e-none px-1"
-                                        value={pathData}
-                                        readOnly
-                                    />
-                                    <button onClick={handleCopyClick} className="bg-blue-500 text-white px-3 py-1 rounded rounded-s-none">
-                                        {copySuccess ? "Copied!" : "Copy"}
-                                    </button>
+                            <div className="flex justify-between py-2 px-2">
+                                <div className="px-2">
+                                    Path:
                                 </div>
+                                <input
+                                    className="w-full rounded rounded-e-none px-1"
+                                    value={pathData}
+                                    readOnly
+                                />
+                                <button onClick={handleCopyClick} className="bg-blue-500 text-white px-3 py-1 rounded rounded-s-none">
+                                    {copySuccess ? "Copied!" : "Copy"}
+                                </button>
                             </div>
                             <div id="json-reader" className="bg-white h-full">
                                 <JsonReaderBox jsonText={editorData} />
