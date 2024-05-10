@@ -78,17 +78,17 @@ export default function App() {
     return (
         <>
             <div className="h-screen">
-                <header className="bg-blue-500 dark:bg-blue-900 py-2 px-5 flex justify-between">
+                <header className="bg-blue-500 dark:bg-blue-900 py-2 px-5 flex justify-between h-[48px]">
                     <h1 className="text-white font-bold text-2xl">
                         JSON Smart Path Finder
                     </h1>
                     <ThemeSwitcher />
                 </header>
-                <div className="block lg:flex bg-gray-200 space-x-3 h-full px-3 py-2">
-                    <div className="flex-1 h-full bg-blue-50 border-slate-500 rounded-xl border-1 shadow">
-                        <div>
+                <div className="block lg:flex bg-gray-200 lg:space-x-3 px-3 py-2 lg:space-y-0 space-y-3" style={{height: 'calc(100% - 48px)'}}>
+                    <div className="flex-1 h-full bg-blue-50 border-slate-500 rounded-xl border-1 shadow overflow-y-hidden">
+                        <div className="h-[48px]">
                             <div className="flex justify-between p-2">
-                                <Button onClick={sampleClick} text="Sample" />
+                                <Button onClick={sampleClick} text="Sa ummmple" />
                                 <Button onClick={beautifyClick} text="Beautify" />
                                 <Button onClick={minifyClick} text="Minify" />
                             </div>
@@ -98,7 +98,7 @@ export default function App() {
                             theme="chrome"
                             tabSize={2}
                             width="100%"
-                            height="100%"
+                            height="calc(100% - 48px)"
                             showPrintMargin={false}
                             value={editorData}
                             onChange={onEditorChange}
@@ -106,9 +106,9 @@ export default function App() {
                             editorProps={{ $blockScrolling: false }}
                         />
                     </div>
-                    <div className="flex-1 h-full bg-blue-50 border-slate-500 rounded-xl border-1 shadow">
+                    <div className="flex-1 h-full bg-blue-50 border-slate-500 rounded-xl border-1 shadow overflow-y-hidden">
                         <div id="reader-box" className="">
-                            <div className="flex justify-between py-2 px-2">
+                            <div className="flex h-[48px] justify-between py-2 px-2">
                                 <div className="px-2">
                                     Path:
                                 </div>
@@ -121,7 +121,7 @@ export default function App() {
                                     {copySuccess ? "Copied!" : "Copy"}
                                 </button>
                             </div>
-                            <div id="json-reader" className="bg-white h-full">
+                            <div id="json-reader" className="bg-white overflow-y-scroll" style={{height: 'calc(100% - 48px)'}}>
                                 <JsonReaderBox jsonText={editorData} />
                             </div>
                         </div>
