@@ -10,7 +10,7 @@ function mapPath(data, prefix = "") {
         if(Array.isArray(data)){
             keyPath = `${prefix ? prefix : ""}[${key}]`;
         } else if(new RegExp(/[\s|\W]/ig).test(key)) {
-            keyPath = `${prefix ? prefix : ""}["${key}""]`;
+            keyPath = `${prefix ? prefix : ""}["${key}"]`;
         } else {
             keyPath = `${prefix ? prefix + "." : ""}${key}`;
         }
