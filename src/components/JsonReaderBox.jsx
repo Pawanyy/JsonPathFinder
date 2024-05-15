@@ -5,22 +5,31 @@ function mapPath(data, prefix = "") {
     const mapPathArray = [];
 
     for (let key in data) {
-        const keyPath = Array.isArray(data) ? `${prefix}[${key}]` : `${prefix}.${key}`;
+        let keyPath = key;
 
-        let children = null;
-
-        if (typeof data[key] === "object" && data[key] !== null) {
-            children = mapPath(data[key], keyPath);
+        if (Array.isArray(data)) {
+            keyPath = `${prefix ? prefix : ""}[${key}]`;
+        } else if (new RegExp(/[\s|\W]/ig).test(key)) {
+            keyPath = `${prefix ? prefix : ""}["${key}"]`;
+        } else {
+            keyPath = `${prefix ? prefix + "." : ""}${key}`;
         }
 
-        const la = {
+        const tempObj = {
             prop: key,
             type: Array.isArray(data[key]) ? "array" : typeof data[key],
             value: data[key],
             path: keyPath,
-            children: children
+            children: null
         };
-        mapPathArray.push(la);
+
+        if (typeof data[key] === "object" && data[key] !== null) {
+            tempObj["children"] = mapPath(data[key], tempObj.path);
+        }
+
+
+
+        mapPathArray.push(tempObj);
     }
 
     return mapPathArray;
@@ -81,13 +90,13 @@ export default function ReaderBox({ jsonText }) {
     }, [jsonText])
 
     return (
-        <div className="json-reader-tree">
+        <>
             {jsonData.map((row, index) => (
                 <div key={index} className="px-2">
                     {row.children ? (<TreeNode key={index} node={row} />) : (<LeafNode key={index} child={row} />)}
                 </div >
             )
             )}
-        </div>
+        </>
     )
 } 
