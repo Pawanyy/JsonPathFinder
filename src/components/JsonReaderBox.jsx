@@ -16,23 +16,24 @@ function mapPath(data, prefix = "") {
         }
 
         const tempObj = {
-            prop: key,
-            type: Array.isArray(data[key]) ? "array" : typeof data[key],
-            value: data[key],
-            path: keyPath,
-            children: null
-        };
+            const tempObj = {
+                prop: key,
+                type: Array.isArray(data[key]) ? "array" : typeof data[key],
+                value: data[key],
+                path: keyPath,
+                children: null
+            };
 
-        if (typeof data[key] === "object" && data[key] !== null) {
-            tempObj["children"] = mapPath(data[key], tempObj.path);
-        }
-
-
-
-        mapPathArray.push(tempObj);
+            if(typeof data[key] === "object" && data[key] !== null) {
+                tempObj["children"] = mapPath(data[key], tempObj.path);
     }
 
-    return mapPathArray;
+
+
+    mapPathArray.push(tempObj);
+}
+
+return mapPathArray;
 }
 
 const selectedNode = (path) => {

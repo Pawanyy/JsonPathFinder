@@ -97,54 +97,56 @@ export default function App() {
             </Helmet>
             <div className="h-screen">
                 <header className="bg-blue-500 dark:bg-blue-900 py-2 px-5 flex justify-between h-[48px]">
-                    <h1 className="text-white font-bold text-2xl">
-                        JSON Smart Path Finder
-                    </h1>
-                    <ThemeSwitcher />
-                </header>
-                <div className="block lg:flex bg-gray-200 lg:space-x-3 px-3 py-2 lg:space-y-0 space-y-3" style={{ height: 'calc(100% - 48px)' }}>
-                    <div className="flex-1 h-full bg-blue-50 border-slate-500 rounded-xl border-1 shadow overflow-y-hidden">
-                        <div className="h-[48px]">
-                            <div className="flex justify-between p-2">
-                                <Button onClick={sampleClick} text="Sample" />
-                                <Button onClick={beautifyClick} text="Beautify" />
-                                <Button onClick={minifyClick} text="Minify" />
-                            </div>
-                        </div>
-                        <AceEditor
-                            mode="json"
-                            theme="chrome"
-                            tabSize={2}
-                            width="100%"
-                            height="calc(100% - 48px)"
-                            showPrintMargin={false}
-                            value={editorData}
-                            onChange={onEditorChange}
-                            name="UNIQUE_ID_OF_DIV"
-                            editorProps={{ $blockScrolling: false }}
-                        />
-                    </div>
-                    <div className="flex-1 h-full bg-blue-50 border-slate-500 rounded-xl border-1 shadow overflow-y-hidden">
-                        <div className="h-full">
-                            <div className="flex h-[48px] justify-between py-2 px-2">
-                                <div className="px-2">
-                                    Path:
+                    <header className="bg-blue-500 dark:bg-blue-900 py-2 px-5 flex justify-between h-[48px]">
+                        <h1 className="text-white font-bold text-2xl">
+                            JSON Smart Path Finder
+                        </h1>
+                        <ThemeSwitcher />
+                    </header>
+                    <div className="block lg:flex bg-gray-200 lg:space-x-3 px-3 py-2 lg:space-y-0 space-y-3" style={{ height: 'calc(100% - 48px)' }}>
+                        <div className="flex-1 h-full bg-blue-50 border-slate-500 rounded-xl border-1 shadow overflow-y-hidden">
+                            <div className="h-[48px]">
+                                <div className="flex justify-between p-2">
+                                    <Button onClick={sampleClick} text="Sa ummmple" />
+                                    <Button onClick={beautifyClick} text="Beautify" />
+                                    <Button onClick={minifyClick} text="Minify" />
                                 </div>
-                                <input
-                                    className="w-full rounded rounded-e-none px-1"
-                                    value={pathData}
-                                    readOnly
-                                />
-                                <button onClick={handleCopyClick} className="bg-blue-500 text-white px-3 py-1 rounded rounded-s-none">
-                                    {copySuccess ? "Copied!" : "Copy"}
-                                </button>
                             </div>
-                            <div className="bg-white overflow-y-scroll" style={{ height: 'calc(100% - 48px)' }}>
-                                <JsonReaderBox jsonText={editorData} />
+                            <AceEditor
+                                mode="json"
+                                theme="chrome"
+                                tabSize={2}
+                                width="100%"
+                                height="calc(100% - 48px)"
+                                height="calc(100% - 48px)"
+                                showPrintMargin={false}
+                                value={editorData}
+                                onChange={onEditorChange}
+                                name="UNIQUE_ID_OF_DIV"
+                                editorProps={{ $blockScrolling: false }}
+                            />
+                        </div>
+                        <div className="flex-1 h-full bg-blue-50 border-slate-500 rounded-xl border-1 shadow overflow-y-hidden">
+                            <div className="h-full">
+                                <div className="flex h-[48px] justify-between py-2 px-2">
+                                    <div className="px-2">
+                                        Path:
+                                    </div>
+                                    <input
+                                        className="w-full rounded rounded-e-none px-1"
+                                        value={pathData}
+                                        readOnly
+                                    />
+                                    <button onClick={handleCopyClick} className="bg-blue-500 text-white px-3 py-1 rounded rounded-s-none">
+                                        {copySuccess ? "Copied!" : "Copy"}
+                                    </button>
+                                </div>
+                                <div className="bg-white overflow-y-scroll" style={{ height: 'calc(100% - 48px)' }}>
+                                    <JsonReaderBox jsonText={editorData} />
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
         </>
     )
