@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react"
 
+interface JsonNode {
+    prop: string;
+    type: string;
+    value: any;
+    path: string;
+    children: JsonNode[] | null;
+}
 
-function mapPath(data, prefix = "") {
-    const mapPathArray = [];
+function mapPath(data: any, prefix = ""): JsonNode[] {
+    const mapPathArray: JsonNode[] = [];
 
     for (let key in data) {
         let keyPath = key;
@@ -15,7 +22,7 @@ function mapPath(data, prefix = "") {
             keyPath = `${prefix ? prefix + "." : ""}${key}`;
         }
 
-        const tempObj = {
+        const tempObj: JsonNode = {
             prop: key,
             type: Array.isArray(data[key]) ? "array" : typeof data[key],
             value: data[key],
@@ -27,32 +34,38 @@ function mapPath(data, prefix = "") {
             tempObj["children"] = mapPath(data[key], tempObj.path);
         }
 
-
-
         mapPathArray.push(tempObj);
     }
 
     return mapPathArray;
 }
 
-const selectedNode = (path) => {
+const selectedNode = (path: string) => {
     console.log('Selected Node::> ', path);
     window.dispatchEvent(new CustomEvent('pathSelected', { detail: { message: 'Path change event', path: path } }));
 }
 
-function LeafNode({ child }) {
+interface LeafNodeProps {
+    child: JsonNode;
+}
+
+function LeafNode({ child }: LeafNodeProps) {
     return (
-        <button onClick={() => selectedNode(child.path)} className="block w-full text-start px-1 py-2 border-b-2 focus:bg-blue-100">
+        <button onClick={() => selectedNode(child.path)} className="block w-full text-start px-1 py-2 border-b-2 focus:bg-blue-100 focus:dark:bg-blue-400">
             <span className="text-blue-700 font-semibold">{child.prop}:</span>
             <span className="ps-2">{child.value}</span>
         </button>
     )
 }
 
-function TreeNode({ node }) {
+interface TreeNodeProps {
+    node: JsonNode;
+}
+
+function TreeNode({ node }: TreeNodeProps) {
     return (
         <details>
-            <summary onClick={() => selectedNode(node.path)} className="px-1 py-2 text-blue-700 font-semibold border-b-2 hover:cursor-pointer focus:bg-blue-100">
+            <summary onClick={() => selectedNode(node.path)} className="px-1 py-2 text-blue-700 font-semibold border-b-2 hover:cursor-pointer focus:bg-blue-100 focus:dark:bg-blue-300">
                 <span>{node.prop}:</span>
             </summary>
             {node.children && node.children.length > 0 && (
@@ -72,20 +85,21 @@ function TreeNode({ node }) {
     );
 }
 
-export default function ReaderBox({ jsonText }) {
+interface ReaderBoxProps {
+    jsonText: string;
+}
 
-    const [jsonData, setJsonData] = useState([]);
+export default function ReaderBox({ jsonText }: ReaderBoxProps) {
+    const [jsonData, setJsonData] = useState<JsonNode[]>([]);
 
     useEffect(() => {
         try {
             const json = JSON.parse(jsonText);
-
             const absData = mapPath(json, "data");
-
             setJsonData(absData);
             console.log("RenderJson", absData);
         } catch (error) {
-            console.log("Action: JSON Render Data | Error ::> ", error.message)
+            console.log("Action: JSON Render Data | Error ::> ", (error as Error).message)
         }
     }, [jsonText])
 
@@ -95,8 +109,7 @@ export default function ReaderBox({ jsonText }) {
                 <div key={index} className="px-2">
                     {row.children ? (<TreeNode key={index} node={row} />) : (<LeafNode key={index} child={row} />)}
                 </div >
-            )
-            )}
+            ))}
         </>
     )
-} 
+}
