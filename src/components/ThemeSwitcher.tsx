@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const ThemeSwitcher = () => {
+const ThemeSwitcher: React.FC = () => {
     const [darkMode, setDarkMode] = useState(false);
 
     useEffect(() => {

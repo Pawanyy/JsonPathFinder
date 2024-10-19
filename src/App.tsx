@@ -8,44 +8,38 @@ import Button from "./components/Button";
 import JsonReaderBox from "./components/JsonReaderBox";
 import { Helmet } from 'react-helmet';
 
-
 export default function App() {
-
     const baseUrl = import.meta.env.VITE_BASE_URL || 'http://localhost:3000';
 
-    const [pathStartProp, setPathStartProp] = useState("x");
+    const [pathStartProp] = useState<string>("x");
+    const [editorData, setEditorData] = useState<string>("");
+    const [pathData, setPathData] = useState<string>("");
+    const [copySuccess, setCopySuccess] = useState<boolean>(false);
 
-    const [editorData, setEditorData] = useState("");
-    const [pathData, setPathData] = useState("");
-    const [copySuccess, setCopySuccess] = useState(false);
-
-    const onEditorChange = (text) => {
+    const onEditorChange = (text: string) => {
         setEditorData(text);
         console.log("change", text);
     }
-
 
     const handleCopyClick = () => {
         navigator.clipboard.writeText(pathData)
             .then(() => {
                 setCopySuccess(true);
-                setTimeout(() => setCopySuccess(false), 1500); // Reset success message after 1.5 seconds
+                setTimeout(() => setCopySuccess(false), 1500);
             })
             .catch(err => console.error('Failed to copy:', err));
     };
 
-
     useEffect(() => {
-
-        const pathChangeEvent = (event) => {
+        const pathChangeEvent = (event: CustomEvent<{ path: string }>) => {
             setPathData(event.detail.path);
             console.log('Path Selected event data:', event.detail.path);
         };
 
-        window.addEventListener('pathSelected', pathChangeEvent);
+        window.addEventListener('pathSelected', pathChangeEvent as EventListener);
 
         return () => {
-            window.removeEventListener('pathSelected', pathChangeEvent);
+            window.removeEventListener('pathSelected', pathChangeEvent as EventListener);
         };
     }, [])
 
@@ -54,7 +48,7 @@ export default function App() {
             const jsonData = JSON.parse(editorData);
             setEditorData(JSON.stringify(jsonData, null, 2));
         } catch (error) {
-            console.log("Action: Beautify Data | Error ::> ", error.message)
+            console.log("Action: Beautify Data | Error ::> ", (error as Error).message)
         }
     }
 
@@ -63,7 +57,7 @@ export default function App() {
             const jsonData = JSON.parse(editorData);
             setEditorData(JSON.stringify(jsonData));
         } catch (error) {
-            console.log("Action: minify Data | Error ::> ", error.message)
+            console.log("Action: minify Data | Error ::> ", (error as Error).message)
         }
     }
 
@@ -74,10 +68,9 @@ export default function App() {
             setEditorData(JSON.stringify(data, null, 2));
             console.log("json :: ", data);
         } catch (error) {
-            console.log("Action: Load Sample | Error ::> ", error.message)
+            console.log("Action: Load Sample | Error ::> ", (error as Error).message)
         }
     }
-
 
     return (
         <>
