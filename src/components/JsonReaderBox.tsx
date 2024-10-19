@@ -51,7 +51,7 @@ interface LeafNodeProps {
 
 function LeafNode({ child }: LeafNodeProps) {
     return (
-        <button onClick={() => selectedNode(child.path)} className="block w-full text-start px-1 py-2 border-b-2 focus:bg-blue-100">
+        <button onClick={() => selectedNode(child.path)} className="block w-full text-start px-1 py-2 border-b-2 focus:bg-blue-100 focus:dark:bg-blue-400">
             <span className="text-blue-700 font-semibold">{child.prop}:</span>
             <span className="ps-2">{child.value}</span>
         </button>
@@ -65,7 +65,7 @@ interface TreeNodeProps {
 function TreeNode({ node }: TreeNodeProps) {
     return (
         <details>
-            <summary onClick={() => selectedNode(node.path)} className="px-1 py-2 text-blue-700 font-semibold border-b-2 hover:cursor-pointer focus:bg-blue-100">
+            <summary onClick={() => selectedNode(node.path)} className="px-1 py-2 text-blue-700 font-semibold border-b-2 hover:cursor-pointer focus:bg-blue-100 focus:dark:bg-blue-300">
                 <span>{node.prop}:</span>
             </summary>
             {node.children && node.children.length > 0 && (

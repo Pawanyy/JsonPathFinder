@@ -1,8 +1,12 @@
+import { useState } from "react";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/theme-chrome";
+import "ace-builds/src-noconflict/theme-cloud9_night_low_color";
 import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/ext-language_tools";
 import Button from "./Button";
+import Alert from "./Alert";
+import { useAppSelector } from "../hooks";
 
 interface JSONEditorProps {
     editorData: string;
@@ -10,8 +14,13 @@ interface JSONEditorProps {
 }
 
 export default function JSONEditor({ editorData, setEditorData }: JSONEditorProps) {
+    const [error, setError] = useState<string | null>(null);
+
+    const theme = useAppSelector((state) => state.theme.mode);
+
     const onEditorChange = (text: string) => {
         setEditorData(text);
+        setError(null);
         console.log("change", text);
     };
 
@@ -19,8 +28,11 @@ export default function JSONEditor({ editorData, setEditorData }: JSONEditorProp
         try {
             const jsonData = JSON.parse(editorData);
             setEditorData(JSON.stringify(jsonData, null, beautify ? 2 : undefined));
+            setError(null);
         } catch (error) {
-            console.log(`Action: ${beautify ? 'Beautify' : 'Minify'} Data | Error ::> `, (error as Error).message);
+            const errorMessage = `Invalid JSON: ${(error as Error).message}`;
+            console.log(`Action: ${beautify ? 'Beautify' : 'Minify'} Data | Error ::> `, errorMessage);
+            setError(errorMessage);
         }
     };
 
@@ -29,33 +41,44 @@ export default function JSONEditor({ editorData, setEditorData }: JSONEditorProp
             const response = await fetch("/data.json");
             const data = await response.json();
             setEditorData(JSON.stringify(data, null, 2));
+            setError(null);
             console.log("json :: ", data);
         } catch (error) {
-            console.log("Action: Load Sample | Error ::> ", (error as Error).message);
+            const errorMessage = `Failed to load sample: ${(error as Error).message}`;
+            console.log("Action: Load Sample | Error ::> ", errorMessage);
+            setError(errorMessage);
         }
     };
 
     return (
-        <div className="flex-1 h-full bg-blue-50 border-slate-500 rounded-xl border-1 shadow overflow-y-hidden">
+        <section aria-label="JSON Editor" className="flex-1 h-full bg-blue-50 dark:bg-blue-900 border-slate-500 rounded-xl border-1 shadow overflow-y-hidden relative">
             <div className="h-[48px]">
                 <div className="flex justify-between p-2">
-                    <Button onClick={sampleClick} text="Sample" />
-                    <Button onClick={() => formatJSON(true)} text="Beautify" />
-                    <Button onClick={() => formatJSON(false)} text="Minify" />
+                    <Button onClick={sampleClick} text="Sample" aria-label="Load sample JSON" />
+                    <Button onClick={() => formatJSON(true)} text="Beautify" aria-label="Beautify JSON" />
+                    <Button onClick={() => formatJSON(false)} text="Minify" aria-label="Minify JSON" />
                 </div>
             </div>
+            {error && (
+                <Alert
+                    message={error}
+                    type="error"
+                    onClose={() => setError(null)}
+                />
+            )}
             <AceEditor
                 mode="json"
-                theme="chrome"
+                theme={theme === "dark" ? "cloud9_night_low_color" : "chrome"}
                 tabSize={2}
                 width="100%"
                 height="calc(100% - 48px)"
                 showPrintMargin={false}
                 value={editorData}
                 onChange={onEditorChange}
-                name="UNIQUE_ID_OF_DIV"
+                name="json-editor"
                 editorProps={{ $blockScrolling: false }}
+                aria-label="JSON Editor"
             />
-        </div>
+        </section>
     );
 }

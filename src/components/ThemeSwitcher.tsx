@@ -1,21 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { HiSun, HiMoon } from "react-icons/hi2";
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { toggleTheme } from '../redux/themeSlice';
 
 const ThemeSwitcher: React.FC = () => {
-    const [darkMode, setDarkMode] = useState(false);
+    const dispatch = useAppDispatch();
+    const theme = useAppSelector((state) => state.theme.mode);
 
     useEffect(() => {
-        if (darkMode) {
+        if (theme === "dark") {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
         }
-    }, [darkMode]);
+    }, [theme]);
 
     return (
-        <button type="button" className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
-            onClick={() => setDarkMode(!darkMode)}>
-            {darkMode ? (<HiSun className='size-5' />) : (<HiMoon className='size-5' />)}
+        <button type="button" className="theme-switcher"
+            onClick={() => dispatch(toggleTheme())}>
+            {theme === "dark" ? (<HiSun />) : (<HiMoon />)}
         </button>
     );
 };
