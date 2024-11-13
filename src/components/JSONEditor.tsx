@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/theme-chrome";
 import "ace-builds/src-noconflict/theme-cloud9_night_low_color";
@@ -18,13 +18,13 @@ export default function JSONEditor({ editorData, setEditorData }: JSONEditorProp
 
     const theme = useAppSelector((state) => state.theme.mode);
 
-    const onEditorChange = (text: string) => {
+    const onEditorChangeHandler = useCallback((text: string) => {
         setEditorData(text);
         setError(null);
-        console.log("change", text);
-    };
+        console.log("change jsonText");
+    }, []);
 
-    const formatJSON = (beautify: boolean) => {
+    const formatJSON = useCallback((beautify: boolean) => {
         try {
             const jsonData = JSON.parse(editorData);
             setEditorData(JSON.stringify(jsonData, null, beautify ? 2 : undefined));
@@ -34,9 +34,9 @@ export default function JSONEditor({ editorData, setEditorData }: JSONEditorProp
             console.log(`Action: ${beautify ? 'Beautify' : 'Minify'} Data | Error ::> `, errorMessage);
             setError(errorMessage);
         }
-    };
+    }, [editorData]);
 
-    const sampleClick = async () => {
+    const sampleClickHandler = useCallback(async () => {
         try {
             const response = await fetch("/data.json");
             const data = await response.json();
@@ -48,15 +48,25 @@ export default function JSONEditor({ editorData, setEditorData }: JSONEditorProp
             console.log("Action: Load Sample | Error ::> ", errorMessage);
             setError(errorMessage);
         }
-    };
+    }, []);
+
+
+    const beautifyHandler = useCallback(async () => {
+        formatJSON(true);
+    }, []);
+
+    const minifyHandler = useCallback(async () => {
+        formatJSON(false);
+    }, []);
+
 
     return (
         <section aria-label="JSON Editor" className="flex-1 h-full bg-blue-50 dark:bg-blue-900 border-slate-500 rounded-xl border-1 shadow overflow-y-hidden relative">
             <div className="h-[48px]">
                 <div className="flex justify-between p-2">
-                    <Button onClick={sampleClick} text="Sample" aria-label="Load sample JSON" />
-                    <Button onClick={() => formatJSON(true)} text="Beautify" aria-label="Beautify JSON" />
-                    <Button onClick={() => formatJSON(false)} text="Minify" aria-label="Minify JSON" />
+                    <Button onClick={sampleClickHandler} text="Sample" aria-label="Load sample JSON" />
+                    <Button onClick={beautifyHandler} text="Beautify" aria-label="Beautify JSON" />
+                    <Button onClick={minifyHandler} text="Minify" aria-label="Minify JSON" />
                 </div>
             </div>
             {error && (
@@ -74,7 +84,7 @@ export default function JSONEditor({ editorData, setEditorData }: JSONEditorProp
                 height="calc(100% - 48px)"
                 showPrintMargin={false}
                 value={editorData}
-                onChange={onEditorChange}
+                onChange={onEditorChangeHandler}
                 name="json-editor"
                 editorProps={{ $blockScrolling: false }}
                 aria-label="JSON Editor"

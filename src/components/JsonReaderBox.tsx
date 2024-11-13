@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import React, { useCallback, useMemo, } from "react"
 
 interface JsonNode {
     prop: string;
@@ -49,57 +49,62 @@ interface LeafNodeProps {
     child: JsonNode;
 }
 
-function LeafNode({ child }: LeafNodeProps) {
+const LeafNode = React.memo(({ child }: LeafNodeProps) => {
+
+    const handleSelectNode = useCallback(() => selectedNode(child.path), [child.path]);
+
     return (
-        <button onClick={() => selectedNode(child.path)} className="block w-full text-start px-1 py-2 border-b-2 focus:bg-blue-100 focus:dark:bg-blue-400">
+        <button onClick={handleSelectNode} className="block w-full text-start px-1 py-2 border-b-2 focus:bg-blue-100 focus:dark:bg-blue-400">
             <span className="text-blue-700 font-semibold">{child.prop}:</span>
             <span className="ps-2">{child.value}</span>
         </button>
     )
-}
+}, (prevProp, nextProp) => prevProp.child.path === nextProp.child.path && prevProp.child.value === nextProp.child.value)
 
 interface TreeNodeProps {
     node: JsonNode;
 }
 
-function TreeNode({ node }: TreeNodeProps) {
+const TreeNode = React.memo(({ node }: TreeNodeProps) => {
+
+    const handleSelectNode = useCallback(() => selectedNode(node.path), [node.path]);
+
+    const childNodes = useMemo(() => (
+        node.children ? node.children.map((child, index) => (
+            <div key={index} className="ms-4">
+                {child.children ? <TreeNode node={child} /> : <LeafNode child={child} />}
+            </div>
+        )) : null
+    ), [node.children]);
+
     return (
         <details>
-            <summary onClick={() => selectedNode(node.path)} className="px-1 py-2 text-blue-700 font-semibold border-b-2 hover:cursor-pointer focus:bg-blue-100 focus:dark:bg-blue-300">
+            <summary onClick={handleSelectNode} className="px-1 py-2 text-blue-700 font-semibold border-b-2 hover:cursor-pointer focus:bg-blue-100 focus:dark:bg-blue-300">
                 <span>{node.prop}:</span>
             </summary>
-            {node.children && node.children.length > 0 && (
-                <>
-                    {node.children.map((child, index) => (
-                        <div key={index} className="ms-4">
-                            {
-                                child.children
-                                    ? (<TreeNode key={index} node={child} />)
-                                    : (<LeafNode key={index} child={child} />)
-                            }
-                        </div>
-                    ))}
-                </>
-            )}
+
+            {childNodes}
+
         </details>
     );
-}
+}, (prevProp, nextProp) => prevProp.node.path == nextProp.node.path)
 
 interface ReaderBoxProps {
     jsonText: string;
 }
 
-export default function ReaderBox({ jsonText }: ReaderBoxProps) {
-    const [jsonData, setJsonData] = useState<JsonNode[]>([]);
+function ReaderBox({ jsonText }: ReaderBoxProps) {
 
-    useEffect(() => {
+    const jsonData = useMemo(() => {
         try {
+            console.time("MapPath");
             const json = JSON.parse(jsonText);
-            const absData = mapPath(json, "data");
-            setJsonData(absData);
-            console.log("RenderJson", absData);
+            const mapData = mapPath(json, "data");
+            console.timeEnd("MapPath");
+            return mapData;
         } catch (error) {
             console.log("Action: JSON Render Data | Error ::> ", (error as Error).message)
+            return [];
         }
     }, [jsonText])
 
@@ -113,3 +118,5 @@ export default function ReaderBox({ jsonText }: ReaderBoxProps) {
         </>
     )
 }
+
+export default React.memo(ReaderBox, (prevProp, nextProp) => prevProp.jsonText === nextProp.jsonText);
